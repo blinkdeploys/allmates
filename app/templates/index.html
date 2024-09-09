@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AllMates</title>
+</head>
+<body>
+    <h1>{{ context.title }}</h1>
+    <p>{{ context.detail }}</p>
+    {% for link in context.links %}
+        <li><a href="#">{{ link }}</a></li>
+    {% endfor %}
+</body>
+</html>

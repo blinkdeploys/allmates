@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: allmates_app
+    command: flask run --host=${HOST} --port=${PORT} --debug
+    volumes:
+      - ./app:/usr/src/app
+    ports:
+      - "${PORT_HOST}:${PORT}"
+    environment:
+      FLASK_APP: ${FLASK_APP}
+      FLASK_ENV: ${FLASK_ENV}
+      POSTGRES_URL: ${POSTGRES_URL}
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_healthy
+    networks:
+      - am_network
+
+  db:
+    image: postgres:13
+    container_name: allmates_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_NAME}
+    env_file: .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT_HOST}:${POSTGRES_PORT}"
+    networks:
+      - am_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: allmates_migrate
+    command: >
+      sh -c "
+        if [ ! -d './migrations' ]; then
+          flask db init;
+        fi;
+        flask db migrate;
+        flask db upgrade;
+      "
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      FLASK_APP: ${FLASK_APP}
+      POSTGRES_URL: ${POSTGRES_URL}
+    env_file: .env
+    networks:
+      - am_network
+
+networks:
+  am_network:
+    driver: bridge
+
+volumes:
+  pgdata:
