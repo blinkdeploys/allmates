@@ -1,15 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AllMates</title>
-</head>
-<body>
-    <h1>{{ context.title }}</h1>
-    <p>{{ context.detail }}</p>
-    {% for link in context.links %}
-        <li><a href="#">{{ link }}</a></li>
-    {% endfor %}
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}AllMates{% endblock %}
+
+{% block page_title %}AllMates{% endblock %}
+
+{% block content %}
+<section class="accordion sellers">
+
+    <p
+        data-identifier="content2"
+        style="
+            padding-top: 100px;
+            padding-bottom: 100px;
+        "
+    >{{ context.detail }}</p>
+
+</section>
+{% endblock %}
