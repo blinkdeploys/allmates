@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}{{ context.title  }}{% endblock %}
+
+{% block page_title %}{{ context.page_title }}{% endblock %}
+
+{% block content %}
+<section class="accordion sellers">
+    <p
+        hidden
+        data-identifier="content2"
+        style="
+            padding-top: 100px;
+            padding-bottom: 100px;
+        "
+    >{{ context.detail }}</p>
+</section>
+
+<section
+    style="
+        margin-bottom: 100px;
+    "
+>
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-3"
+        style="
+            height: 70vh;
+            overflow-y: scroll;
+        "
+    >
+        {% for case in context.cases %}
+            <div
+                style="
+                    cursor: pointer;
+                    padding: 20px 0px;
+                    border-bottom: 1px solid #A0A0A0;
+                "
+            >
+                <div class="row">
+                    <div class="col">
+                        {% for team in case.team %}
+                        <img
+                            src="{{ team.avatar }}"
+                            title="Start a conversation with {{ team.first_name }} {{ team.last_name }}"
+                            style="
+                                width: 28px;
+                                height: 28px;
+                                border-radius: 50%;
+                            "
+                            />
+                        {% endfor %}
+                    </div>
+                    {% if case.alert %}
+                    <div
+                        class="col-2 bold {{ case.alert.code }}"
+                        style="
+                            font-size: 11px;
+                            color: #000000;
+                            width: auto;
+                            border-radius: 5px;
+                            max-height: 1.5rem;
+                        "
+                    >
+                        {{ case.alert.title }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div
+                    style="padding: 5px 0px;"
+                >
+                    <code
+                        style="font-weight: bold;"
+                    >{{ case.case_number }} - {{ case.title }}</code>
+                </div>
+                <div
+                >
+                    <code>{{ case.summary }}</code>
+                </div>
+                <code>Plaintiffs: {{ case.plaintiffs }}, Defendants: {{ case.defendants }}</code>
+                <div>
+                    <code>Date: {{ case.date }}</code>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="col-5 px-4"
+        style="
+            height: 70vh;
+            overflow-y: scroll;
+        "
+    >
+        <div class="pt-3 pb-4">
+            <quote>
+            <p>Legal Brief: <code>Smith v. Johnson</code></p>
+            <p>Case Title: <code>Smith v. Johnson</code></p>
+            <p>Case Number: <code>2024-CV-1001</code></p>
+            <p>Court: <code>Superior Court of California</code></p>
+            <p>Judge Presiding: <code>Judge William Davis</code></p>
+            <p>Date of Entry: <code>January 5, 2024</code></p>
+            <p>State: <code>California</code></p>
+            </quote>
+        </div>
+        <div class="pt-3 pb-3">
+            <h3>
+                Introduction
+            </h3>
+            <code>This legal brief concerns the case of John Smith v. Sarah Johnson, a contract dispute regarding a real estate transaction. The plaintiff, John Smith, is alleging that the defendant, Sarah Johnson, breached the terms of a contract involving the sale of a residential property. The defendant contends that there were valid reasons for non-performance, citing mutual misunderstandings and delays outside her control.</code>
+        </div>
+        <div class="pt-3 pb-3">
+            <h3>
+                Background
+            </h3>
+            <code>On July 10, 2023, the parties entered into a purchase agreement for a property located at 123 Maple Avenue, Los Angeles, California. Under the terms of the contract, Sarah Johnson agreed to sell the property to John Smith for $950,000. The agreed-upon closing date was set for August 15, 2023.</code>
+            <code>However, on August 10, 2023, the defendant informed the plaintiff that she would be unable to finalize the sale due to outstanding repairs and inspections that needed to be completed. The closing date was then informally extended to September 1, 2023. Despite several extensions and attempts to accommodate the defendant, the sale was never completed, and John Smith subsequently filed suit, claiming that Sarah Johnson had breached the contract by failing to deliver the property as agreed.</code>
+        </div>
+        <div class="pt-3 pb-3">
+            <h3>
+                Issues
+            </h3>
+            <p>Whether Sarah Johnson breached the contract by failing to deliver the property on the specified closing date or within the extended period.</p>
+            <p>Whether John Smith is entitled to damages as a result of the breach.</p>
+            <p>Whether there were extenuating circumstances that justified Sarah Johnson's failure to comply with the terms of the contract.</p>
+        </div>
+        <div class="pt-3 pb-3">
+            <h3>
+                Plaintiff’s Arguments
+            </h3>
+            <li>
+                Breach of Contract: The plaintiff asserts that the defendant is in clear violation of the purchase agreement, which explicitly outlined a closing date of August 15, 2023. The defendant’s failure to close on this date or any of the subsequent extensions constitutes a material breach of the agreement. The plaintiff complied with all conditions precedent, including securing financing and conducting inspections. Despite numerous accommodations for the defendant, the sale never materialized, causing the plaintiff financial and emotional hardship, including lost opportunities for other investments.
+            </li>
+            <li>
+                Damages: As a result of the breach, John Smith argues that he suffered financial damages in the form of legal fees, lost opportunities, and incurred expenses from securing alternate housing during the extended period. He is seeking $75,000 in compensatory damages for these losses and requests specific performance or, alternatively, damages equal to the fair market value difference between the contract price and the property’s current value.
+            </li>
+        </div>
+        <div class="pt-3 pb-3">
+            <h3>
+                Defendant’s Arguments
+            </h3>
+            <li>
+                Unforeseeable Circumstances: Sarah Johnson contends that the delays in closing were not within her control and were the result of unforeseen complications with the property's structural integrity. She argues that additional inspections and repair work were necessary to make the property suitable for sale, and that these delays were communicated to the plaintiff in a timely manner. Johnson also claims that she acted in good faith by attempting to resolve the issues as quickly as possible.
+            </li>
+            <li>
+                No Intent to Breach: The defendant maintains that her actions do not constitute a willful breach of contract, as the delays were based on necessary and reasonable steps to ensure the property met the contractual obligations. Johnson argues that the delays should be considered justifiable under the impossibility of performance doctrine, which excuses contractual performance under certain circumstances. She further contends that specific performance is not a suitable remedy, as the sale cannot be completed without further repairs.
+            </li>
+        </div>
+        <div class="pt-3 pb-3">
+            <h3>
+            Legal Analysis
+            </h3>
+            <li>
+                Breach of Contract: Under California contract law, a party breaches a contract when they fail to perform a contractual duty without a valid legal excuse. The plaintiff is likely to prevail on this issue, as the defendant missed multiple deadlines without securing formal extensions or providing evidence of a legitimate impediment that would excuse her performance. While repairs and inspections are important, the defendant failed to document or obtain an agreement to extend the contract in writing, which weakens her position.
+            </li>
+            <li>
+                Impossibility of Performance Doctrine: The impossibility doctrine in California excuses non-performance when unforeseen circumstances arise that are not the fault of either party. While the defendant might attempt to invoke this defense, the burden is on her to prove that the repairs rendered the contract impossible to perform. In this case, the plaintiff could argue that the need for repairs is an ordinary risk in real estate transactions and does not rise to the level of legal impossibility.
+            </li>
+            <li>
+                Specific Performance: Specific performance is a remedy available in real estate transactions because property is considered unique. If the plaintiff can show that the breach caused irreparable harm and that the defendant is still capable of delivering the property, the court may order specific performance. However, if the repairs remain incomplete, the court may opt for monetary damages instead.
+            </li>
+        </div>
+        <div class="pt-3 pb-3">
+            <h3>
+                Conclusion
+            </h3>
+            <p>Based on the facts and arguments presented, the plaintiff has a strong case for breach of contract. The defendant's delays, while problematic, do not rise to the level of impossibility that would excuse non-performance. The court should grant $75,000 in damages to the plaintiff, or alternatively, order specific performance of the contract, provided that the necessary repairs are completed. If the property is no longer viable for sale, the court may need to determine additional compensatory damages based on the property's current market value.</p>
+        </div>
+        <div>
+            <p>Respectfully Submitted,</p>
+            <p>Counsel for Plaintiff</p>
+        </div>
+
+    </div>
+</div>
+</section>
+
+
+{% endblock %}

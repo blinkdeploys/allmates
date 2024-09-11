@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}{{ context.page_title  }}{% endblock %}
+
+{% block page_title %}{{ context.page_title }}{% endblock %}
+
+{% block content %}
+<section class="accordion sellers">
+    <p
+        data-identifier="content2"
+        style="
+            padding-top: 100px;
+            padding-bottom: 100px;
+        "
+    >{{ context.detail }}</p>
+</section>
+{% endblock %}

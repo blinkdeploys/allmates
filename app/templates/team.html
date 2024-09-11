@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}{{ context.title  }}{% endblock %}
+
+{% block page_title %}{{ context.page_title }}{% endblock %}
+
+{% block content %}
+<section class="accordion sellers">
+    <p
+        hidden
+        data-identifier="content2"
+        style="
+            padding-top: 100px;
+            padding-bottom: 100px;
+        "
+    >{{ context.detail }}</p>
+</section>
+
+<section
+    style="
+        margin-bottom: 100px;
+    "
+>
+<div class="row"
+    style="
+            width: 80vw;
+    "
+>
+    <div class="col-1"></div>
+    <div class="col-3"
+        style="
+            height: 70vh;
+            overflow-y: scroll;
+        "
+    >
+        {% for team in context.team %}
+            <div
+                style="
+                    cursor: pointer;
+                    padding: 20px 0px;
+                    border-bottom: 1px solid #d2d0d0;
+                "
+            >
+                <div class="d-flex">
+                    <img
+                        src="{{ team.avatar }}"
+                        title="Conversation \w {{ team.first_name }} {{ team.last_name }}"
+                        style="
+                            width: 25px;
+                            height: 25px;
+                            margin: 5px 10px;
+                            border-radius: 50%;
+                        "
+                        />
+                        <div
+                        >
+                            <div>
+                            <code
+                                style="font-weight: bold;"
+                            >{{ team.first_name }}  {{ team.last_name }}</code>
+                            </div>
+                            <div>
+                                <code>{{ team.achievement }}</code> / 
+                                <code style="font-size: 14px;">Online: {{ team.date }}</code>
+                            </div>
+                        </div>
+                </div>
+
+            </div>
+        {% endfor %}
+    </div>
+    <div class="col-6"
+        id="chat-panel"
+        style="
+            height: 70vh;
+            padding: 0px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            position: relative;
+        "
+    >
+        <div class="pt-3 pb-4 px-4"
+            style="
+                position: sticky;
+                top: 0px; left: 0px;
+                background: #ffffff;
+                box-shadow: 4px 2px 9px #c0c0c0;
+            "
+        >
+            <div class="row">
+                <div class="col-1">
+                    <img
+                        src="{{ context.chat.team.avatar }}"
+                        title="View Profile {{ context.chat.team.first_name }} {{ context.chat.team.last_name }}"
+                        style="
+                            width: 25px;
+                            height: 25px;
+                            margin: 5px 10px;
+                            border-radius: 50%;
+                        "
+                        />
+                </div>
+                <div class="col-10">
+                    <p>Your conversation with: <code><b class="active">Smith Johnson</b></code></p>
+                    <p><code>All conversations are private</code></p>
+                    <p>View: <code>Profile</code></p>
+                </div>
+                <div class="col-1">
+                    <i class="pointer fa-regular fa-circle-question"></i>
+                </div>
+            </div>
+        </div>
+
+        <div
+            style="min-height: 300px;"
+        >
+        </div>
+
+        {% for message in context.chat.conversation %}
+        <div class="row pt-4 pb-4 px-4">
+            {% if message.from != "client" %}
+            <div class="col-2"></div>
+            {% endif %}
+            <div class="col-10">
+                <div class="row px-4">
+                    {% if message.from == "client" %}
+                    <div class="col-1">
+                        <img
+                            src="{{ context.user.avatar }}"
+                            title="Profile @{{ context.user.username }}"
+                            style="
+                                width: 25px;
+                                height: 25px;
+                                margin: 5px 10px;
+                                border-radius: 50%;
+                            "
+                            />
+                    </div>
+                    {% endif %}
+                    <div class="col-11 px-4">
+                        <div
+                            {% if message.from != "client" %}align="right"{% endif %}
+                        >
+                            <b class="font-bold"
+                                style="cursor: pointer;"
+                            >
+                                {% if message.from == "client" %}You{% else %}{{ message.from }}{% endif %}
+                            </b>
+                            <code style="font-size: 13px;">@ {{ message.timestamp }}</code>
+                        </div>
+                        <div>{{ message.message }}</div>
+                    </div>
+                    {% if message.from != "client" %}
+                    <div class="col-1">
+                        <img
+                            src="{{ context.chat.team.avatar }}"
+                            title="View Profile {{ context.chat.team.first_name }} {{ context.chat.team.last_name }}"
+                            style="
+                                width: 25px;
+                                height: 25px;
+                                margin: 5px 10px;
+                                border-radius: 50%;
+                            "
+                            />
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% if message.from == "client" %}
+            <div class="col-2"></div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+</section>
+
+<script>
+
+window.onload = function() {
+    const scrollableDiv = document.getElementById('chat-panel');
+    scrollableDiv.scrollTo({
+        top: scrollableDiv.scrollHeight,
+        behavior: 'smooth'
+    });
+}
+</script>
+
+{% endblock %}

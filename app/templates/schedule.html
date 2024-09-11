@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block title %}{{ context.title  }}{% endblock %}
+
+{% block page_title %}{{ context.page_title }}{% endblock %}
+
+{% block content %}
+<section class="accordion sellers">
+    <p
+        hidden
+        data-identifier="content2"
+        style="
+            padding-top: 100px;
+            padding-bottom: 100px;
+        "
+    >{{ context.detail }}</p>
+</section>
+
+<section
+    style="
+        margin-bottom: 100px;
+    "
+>
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-3"
+        style="
+            height: 70vh;
+            overflow-y: scroll;
+        "
+    >
+        <div hidden class="spinner-grow" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        {% for schedule in context.schedule %}
+            <div
+                style="
+                    cursor: pointer;
+                    padding: 20px 0px;
+                    border-bottom: 1px solid #A0A0A0;
+                "
+            >
+                <div class="row">
+                    <div class="col-1"
+                        align="center"
+                    >
+                        <div style="
+                            {% if schedule.type == 'event' %}
+                            background: #FFE8A3;
+                            border: 2px solid #dadce5;
+                            {% else %}
+                            background: #AFF4C6;
+                            border: 2px solid #caccd3;
+                            {% endif %}
+                            width: 12px; height: 12px;
+                            border-radius: 100%;
+                            margin-top: 22px;
+                            "
+                        >
+                        </div>
+                    </div>
+                    <div class="col-9">
+                        <div
+                            style="padding: 5px 0px;"
+                        >
+                            <code
+                                style="font-weight: bold;"
+                            >
+                            {% if schedule.case_number %}{{ schedule.case_number }} - {% endif %}
+                            {{ schedule.title }}
+                            </code>
+                            <code>{{ schedule.summary }}</code>
+                            {% if schedule.type == 'event' %}
+                            <code class="badge">Scheduled Event</code>
+                            {% else %}
+                            <code class="badge">Court Appearance</code>
+                            {% endif %}
+                            <div class="d-flex mt-2"
+                                align="right"
+                            >
+                                <div
+                                    class="bold m-1 px-2 {{ schedule.status.code }}"
+                                    style="
+                                        font-size: 11px;
+                                        color: #000000;
+                                        width: auto;
+                                        border-radius: 5px;
+                                        max-height: 1.5rem;
+                                    "
+                                >
+                                    {{ schedule.status.title }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2"
+                        align="center"
+                    >
+                        <code>{{ schedule.day_of_week }}</code>
+                        <div>
+                            <code
+                                class="font-bold"
+                                style="font-size: 25px; font-weight: bold;"
+                            >{{ schedule.day }}</code>
+                        </div>
+                        <code>{{ schedule.month }}</code>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="col-5 px-4"
+        style="
+            height: 70vh;
+            overflow-y: scroll;
+        "
+    >
+        <div class="pt-3 pb-4">
+            <div class="row">
+                <div class="col-10">
+                    <p class="bold">Event Type: <span class="bold">Court Appearance</span></p>
+                    <p>Case Number: <code>2024-CV-1001</code></p>
+                    <p>Court: <code>Superior Court of California</code></p>
+                    <p>State: <code>California</code></p>
+                </div>
+                <div class="col-1"
+                    align="center"
+                >
+                    <code class="bold">Sept</code>
+                    <div align="center">
+                        <code
+                            class="font-bold"
+                            style="font-size: 32px; font-weight: bold;"
+                        >11</code>
+                    </div>
+                    <code>Wed</code>
+                </div>
+            </div>
+        </div>
+        <div class="pt-3 pb-3">
+            <h3>Guests</h3>
+            {% if context.event|count <= 0 %}
+                <div class="px-3 d-flex"
+                >
+                    <i class="pointer fa-regular fa-circle-question pt-1"></i>
+                    <i class="px-2">No guests addes yet</i>
+                </div>
+            {% else %}
+            {% for guest in context.event.guests %}
+            <div class="d-flex">
+                <img
+                    src="{{ guest.avatar }}"
+                    title="Conversation \w {{ guest.first_name }} {{ guest.last_name }}"
+                    style="
+                        width: 25px;
+                        height: 25px;
+                        margin: 5px 10px;
+                        border-radius: 50%;
+                    "
+                    />
+                <div
+                >
+                    <div>
+                        <code
+                            style="font-weight: bold;"
+                        >{{ guest.first_name }}  {{ guest.last_name }}</code>
+                    </div>
+                    <div>
+                        <code>{{ guest.achievement }}</code> / 
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div class="pt-3 pb-3">
+            <h3>Venue</h3>
+            <code>Superior Court of California, 236 Court Building, Los Angeles, CA</code>
+        </div>
+        <div class="pt-3 pb-3">
+            <h3>
+                Notes
+            </h3>
+            <code>
+                This legal brief concerns the case of John Smith v. Sarah Johnson, a contract dispute regarding a real estate transaction.
+                <!--
+                The plaintiff, John Smith, is alleging that the defendant, Sarah Johnson, breached the terms of a contract involving the sale of a residential property.
+                The defendant contends that there were valid reasons for non-performance, citing mutual misunderstandings and delays outside her control.
+                <p>Whether Sarah Johnson breached the contract by failing to deliver the property on the specified closing date or within the extended period.</p>
+                <p>Whether John Smith is entitled to damages as a result of the breach.</p>
+                <p>Whether there were extenuating circumstances that justified Sarah Johnson's failure to comply with the terms of the contract.</p>
+                -->
+            </code>
+        </div>
+        <!--div class="pt-3 pb-3">
+            <h3>
+                Conclusion
+            </h3>
+            <p>Based on the facts and arguments presented, the plaintiff has a strong case for breach of contract. The defendant's delays, while problematic, do not rise to the level of impossibility that would excuse non-performance. The court should grant $75,000 in damages to the plaintiff, or alternatively, order specific performance of the contract, provided that the necessary repairs are completed. If the property is no longer viable for sale, the court may need to determine additional compensatory damages based on the property's current market value.</p>
+        </div-->
+
+    </div>
+</div>
+</section>
+
+
+{% endblock %}
