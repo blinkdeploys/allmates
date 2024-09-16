@@ -14,10 +14,11 @@ APP_NAME = "AllMates"
 NAVIGATION_MENU = [
                     dict(code="case", title="Cases"),
                     dict(code="schedule", title="Schedule"),
+                    dict(code="fee", title="Fees"),
                     dict(code="team", title="Legal Team"),
                     dict(code="locate", title="Locate"),
                     dict(code="transfer", title="Tranfers"),
-                    dict(code="about", title="About"),
+                    # dict(code="about", title="About"),
                     ]
 
 MOCK_USER_PROFILE = {
@@ -1091,6 +1092,8 @@ MOCK_TEAM_CHAT = [
   }
 ]
 
+MOCK_UPCOMING_FEE_SHCEDULE = []
+
 MOCK_FUND_TRANSFER_HISTORY = []
 
 
@@ -1135,7 +1138,8 @@ def index():
                         dict(title="Court Appearance Schedule", detail="Get notified on your court schedule", code="court-schedule", id=2),
                         dict(title="Locate Inmate", detail="Find an inmates current location", code="locate-inmate", id=3),
                         dict(title="Visitation", detail="Check up on visitation hours", code="visitation", id=4),
-                        dict(title="Transfer Funds", detail="Transfer funds to an inmate", code="funds", id=5),
+                        dict(title="Fund Transfers", detail="Transfer funds to an inmate", code="funds", id=5),
+                        dict(title="Fees & Deadlines", detail="Deadlines of fees to be made", code="fees", id=5),
                    ],
                    user=MOCK_USER_PROFILE,
                    )
@@ -1249,14 +1253,26 @@ def team():
 def transfer():
     context = dict(
         page_code = "transfer",
-        title = f"{APP_NAME} / Fund Transfers",
-        page_title = "Fund Transfers",
-        detail="Your court appearance schedule.",
+        title = f"{APP_NAME} / Funds Trander History",
+        page_title = "Funds Transfer History",
+        detail="A history of your fund transfers.",
         navigation_menu=NAVIGATION_MENU,
         user=MOCK_USER_PROFILE,
     )
     return render_template('transfer.html', context=context)
 
+
+@main.route('/fee')
+def fee():
+    context = dict(
+        page_code = "fee",
+        title = f"{APP_NAME} / Fees & Deadlines",
+        page_title = "Fees & Deadlines",
+        detail="A schedule of mandatory fees and penalties and timelines.",
+        navigation_menu=NAVIGATION_MENU,
+        user=MOCK_USER_PROFILE,
+    )
+    return render_template('fee.html', context=context)
 
 
 @main.route('/about')
