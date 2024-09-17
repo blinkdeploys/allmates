@@ -7,11 +7,74 @@
 {% block content %}
 <section class="accordion sellers">
     <p
+        hidden
         data-identifier="content2"
         style="
             padding-top: 100px;
             padding-bottom: 100px;
         "
     >{{ context.detail }}</p>
+
+
+    <div class="row">
+
+        <div class="col-3 px-0"
+            style="
+                height: 70vh;
+                overflow-y: scroll;
+                padding-bottom: 100px;
+            "
+        >
+            {% for court in context.courts %}
+            <div class="col-12 py-2 pointer">
+                <a href="/locate/{{ court.id }}"
+                    targert="_blank"
+                    class="bold {% if court.id == context.current_court.id %}active{% endif %}"
+                >{{ court.title }}</a>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-8 px-3"
+            style="
+                height: 70vh;
+                overflow-y: scroll;
+                padding-bottom: 100px;
+            "
+        >
+            <div class="row">
+                <div style="padding: 50px 0px;"></div>
+
+                <h1 class="bold">{{ context.current_court.title }}</h1>
+                <a href="{{ context.current_court.link }}"
+                    target="_blank"
+                    class="bold"
+                >{{ context.current_court.link }}</a>
+
+                <div style="padding: 25px 0px;"></div>
+
+                {% for service in context.services %}
+                <div class="col-1 py-3 pointer">
+                    <div style="
+                            background: #AFF4C6;
+                            border: 2px solid #caccd3;
+                            
+                            width: 12px; height: 12px;
+                            border-radius: 100%;
+                            margin-top: 22px;
+                            ">
+                    </div>
+                </div>
+                <div class="col-11 py-3 pointer">
+                    <div class="bold py-1">{{ service.title }}</div>
+                    <div class="py-1">{{ service.detail }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+
+
 </section>
 {% endblock %}
