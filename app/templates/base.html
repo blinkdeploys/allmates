@@ -3,18 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}AllMates{% endblock %}</title>
+    <title>{% block title %}{{ context.app_name }}{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap-grid.min.css" rel="stylesheet" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
-    <style>html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;height:100%}*{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:0 0;box-sizing:border-box;border-color:#fff;text-align:center}article,aside,figure,footer,header,hgroup,nav,section{display:block}nav ol,nav ul,ol,ul{list-style:none;list-style-image:none}body,main{display:flex;flex-direction:column}body{background:#fff;font:400 16px/24px Macan,Helvetica Neue,Helvetica,Arial,sans-serif;color:#74767e;vertical-align:top;min-height:100%;position:relative;justify-content:flex-start;align-items:stretch;align-content:stretch}body>header{border-bottom:1px solid #ddd;width:100%;height:80px;background:#fff url(data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iZml2ZXJyLWxvZ28tc3RhdGljIiB3aWR0aD0iODkiIGhlaWdodD0iMjciIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTgxLjYgMTMuMWgtMy4xYy0yIDAtMy4xIDEuNS0zLjEgNC4xdjkuM2gtNlYxMy4xaC0yLjVjLTIgMC0zLjEgMS41LTMuMSA0LjF2OS4zaC02VjguMWg2djIuOGMxLTIuMiAyLjMtMi44IDQuMy0yLjhoNy4zdjIuOGMxLTIuMiAyLjMtMi44IDQuMy0yLjhoMnptLTI1LjIgNS42SDQ0Yy4zIDIuMSAxLjYgMy4yIDMuNyAzLjIgMS42IDAgMi43LS43IDMuMS0xLjhsNS4zIDEuNWMtMS4zIDMuMi00LjUgNS4xLTguNCA1LjEtNi41IDAtOS41LTUuMS05LjUtOS41IDAtNC4zIDIuNi05LjQgOS4xLTkuNCA2LjkgMCA5LjIgNS4yIDkuMiA5LjEgMCAuOSAwIDEuNC0uMSAxLjh6bS01LjctMy41Yy0uMS0xLjYtMS4zLTMtMy4zLTMtMS45IDAtMyAuOC0zLjQgM3pNMjcuOCAyNi41SDMzbDYuNi0xOC4zaC02bC0zLjIgMTAuNy0zLjItMTAuOGgtNnptLTI0LjQgMGg1LjlWMTMuMUgxNXYxMy40aDUuOVY4LjFIOS4zVjdjMC0xLjIuOS0yIDIuMi0ySDE1VjBoLTQuNEM2LjMgMCAzLjQgMi43IDMuNCA2LjZ2MS41SDB2NWgzLjR6IiBmaWxsPSIjMDAzOTEyIi8+PHBhdGggZD0iTTg1LjMgMjdjMiAwIDMuNy0xLjcgMy43LTMuN3MtMS43LTMuNy0zLjctMy43LTMuNyAxLjctMy43IDMuNyAxLjcgMy43IDMuNyAzLjd6IiBmaWxsPSIjMWRiZjczIi8+PC9zdmc+) 40px no-repeat;background-size:auto 27px}@media (max-width:1000px){body>header{background-position:50%}}main{justify-content:center;align-items:center;align-content:center;flex-grow:1;padding:1em 1em 0}main>article{margin:0 0 4em}figure,figure img{margin:1em}figure>*{max-width:100%}h1{font-size:24px;line-height:32px;color:#404145;max-width:600px}@media (max-width:1000px){h1{font-size:20px;line-height:28px}}a{text-decoration:none;color:#74767e;/*color:#14AE5C*//*#188652*/}a:hover{color:#404145;text-decoration:none}a.active{color:#14AE5C;}code,pre{font:400 .9em/1.1em monospace}main>aside{width:600px;padding:2em 0}footer,main>aside{border-top:1px solid #dadbdd;margin-top:2em}footer img,main>aside img{height:1em;margin:0 0 0 .5em;vertical-align:middle}footer aside,main>aside aside{display:flex;justify-content:space-between;width:100%;max-width:1400px;margin:0 auto;padding:2em}@media (max-width:1000px){footer aside,main>aside aside{padding:1em 0;flex-direction:column-reverse}footer aside div,main>aside aside div{padding:1em}}footer aside *,main>aside aside *{text-align:left;vertical-align:auto}@media (max-width:1000px){footer aside *,main>aside aside *{text-align:center}}footer p,main>aside p{font:16px/150% Macan,Helvetica Neue,Helvetica,Arial,sans-serif;color:#95979d}footer a[href*="app.appsflyer.com"],main>aside a[href*="app.appsflyer.com"]{display:inline-block;margin:.3em 0 0 .5em}footer a[href*="app.appsflyer.com"]:first-child,main>aside a[href*="app.appsflyer.com"]:first-child{margin:.3em 0 0}.cf-wrapper{color:#fff;max-width:600px}.cf-wrapper h1{color:#404145;margin:1em 0 0}.cf-wrapper *{font-size:1em;color:#74767e}.cf-wrapper *,article *,section *{text-align:left}.accordion{width:80vw;max-width:90vw;max-width:600px}.accordion>div{display:none;justify-content:center}.accordion.buyers>div,.accordion.sellers>div{display:flex}.accordion h2{color:#95979d;cursor:pointer;padding:.7em 1em;border-bottom:2px solid #fff;transition:color,border-color .3s}.accordion.buyers h2[data-for=buyers],.accordion.sellers h2[data-for=sellers]{color:#000;border-color:#404145}.accordion.buyers li[data-for=sellers],.accordion.sellers li[data-for=buyers],.accordion input{display:none}.accordion label{display:block;cursor:pointer;overflow:hidden;text-align:left;transition:border-color .2s ease-out;border-top:1px solid #e4e5e7}.accordion article{max-height:0;padding:0;transition:padding .2s ease-out}.accordion header{font-weight:700;padding:1em 0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#404145}.accordion header:before{content:" ";display:inline-block;width:.5em;height:.5em;border:1px solid #0e0e0f;border-width:0 0 1px 1px;float:right;margin:.5em;transition:transform .3s;transform:rotate(-45deg)}.accordion input:checked+label>header{color:#404145;white-space:inherit}.accordion input:checked+label>header:before{transform:rotate(135deg)}.accordion input:checked+label>article{opacity:1;padding:1em 0;max-height:inherit;border-color:#f7f7f7}.active{color:#1be379}.bold{font-weight:bold}.pointer{cursor: pointer}
-
-        .warning{background: #FFD43B;}
-        .info{background: #63E6BE;}
-        .danger{background: #e663a4; color:#ffffff !important;}
-        .grey {background: #dfe2ee;}
-
-    </style>
+    <link href="/static/css/index.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="/static/js/index.js"></script>
 </head>
 <body>
     <main>
@@ -30,9 +24,10 @@
             <div class="d-flex justify-content-between">
                 <a href="/" class="d-flex active">
                     <i class="fa-solid fa-qrcode p-1"></i>
-                    <h2 class="font-bold px-3">LegalEase</h2>
+                    <h2 class="font-bold px-3">{{ context.app_name }}</h2>
                 </a>
                 <a href="#" class="d-flex">
+                    {% if context.user %}
                     <img
                         src="{{ context.user.avatar }}"
                         title="Profile @{{ context.user.username }}"
@@ -46,7 +41,40 @@
                         "
                         />
                         <!--#14AE5C-->
-                    <i class="fa-solid fa-bars-staggered"></i>
+                    <i class="fa-solid fa-bars-staggered pointer"
+                        onclick="toggleByName('user-right-menu')"
+                    ></i>
+                    <div
+                        name="user-right-menu"
+                        class="d-none"
+                        style="
+                            position: absolute;
+                            right: 10px;
+                            top: 60px;
+                            z-index: 3;
+                            background: #ffffff;
+                            width: 80px;
+                            justify-content: end;
+                            align-items: end;
+                        "
+                    >
+                        <div
+                            align="right"
+                            style="
+                                padding: 5px 10px;
+                            "
+                        >
+                            Settings
+                        </div>
+                        <div
+                            align="right"
+                            style="padding: 5px 10px;"
+                            onclick="location.href = '/logout';"
+                        >
+                            Logout
+                        </div>
+                    </div>
+                    {% endif %}
                 </a>
             </div>
         </div>
@@ -120,7 +148,7 @@
 
         <div style="position: fixed; bottom: 0px; width:100%; height: 50px; padding:15px; background: #ffffff;">
             <code align="center">
-                <div>Copyright 2024, AllMates</div>
+                <div>Copyright 2024, {{ context.app_name }}</div>
             </code>
         </div>
 

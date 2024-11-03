@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}{{ context.page_title  }}{% endblock %}
+
+{% block page_title %}{{ context.page_title }}{% endblock %}
+
+{% block content %}
+
+<style>
+    .font-bold {
+        font-weight: bold;
+    }
+</style>
+<div style="margin-bottom: 200px;"
+>
+    <section class="accordion sellers">
+        <h1 cass="pt-3 pb-4">Disclaimer and Limitation of Liability</h1>
+        <p
+            data-identifier="content2"
+            hidden
+            style="
+                padding-top: 100px;
+                padding-bottom: 100px;
+            "
+        >{{ context.detail }}</p>
+
+        <p class="mt-5 mb-4">Welcome to {{ context.app_name }}. By using this application, you agree to the following terms and acknowledge our limitation of liability:</p>
+
+        <p class="m-4"><span class="font-bold">No Legal Advice Provided:</span> This application is intended solely as a tool for recording and managing legal case information. It does not provide legal advice, opinions, or recommendations. Users are encouraged to consult a licensed attorney for any legal issues.</p>
+
+        <p class="m-4"><span class="font-bold">Data Responsibility:</span> Users are responsible for the accuracy and completeness of the information they enter into the application. {{ context.app_name }} does not verify or validate data entered by users and is not responsible for any errors, omissions, or legal outcomes that may arise from reliance on this information.</p>
+
+        <p class="m-4"><span class="font-bold">Confidentiality and Data Security:</span> While {{ context.app_name }} implements standard security measures, we cannot guarantee complete security of all information entered into the system. Users are responsible for protecting sensitive or confidential information according to their professional and legal obligations.</p>
+
+        <p class="m-4"><span class="font-bold">Limitation of Liability:</span> To the fullest extent permitted by law, {{ context.app_name }} and its affiliates, officers, and employees shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising out of the use or inability to use the application, even if advised of the possibility of such damages.</p>
+
+        <p class="m-4"><span class="font-bold">Changes to Terms:</span> {{ context.app_name }} reserves the right to update or modify these terms at any time. Continued use of the application following any changes signifies acceptance of the revised terms.</p>
+        
+    </section>
+</div>
+{% endblock %}

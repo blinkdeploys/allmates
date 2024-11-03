@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}{{ context.page_title  }}{% endblock %}
+
+{% block content %}
+
+<section>
+
+    <form method="POST" action="{{ url_for('main.login') }}">
+        <div class="row" align="center">
+            <div class="col-3"></div>
+            <div class="col-6">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <div style="border-radius: 5px;
+                        background: #f6d2dd;
+                        color: #f4326c;
+                        font-weight: bold;
+                        padding: 20px;
+                        margin-bottom: 30px;
+                    ">
+                        <ul>
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                {% endwith %}
+        
+
+                {{ form.hidden_tag() }}
+
+
+                <div class="p-2">
+                    <div
+                        style="padding: 8px 0px;"
+                    >
+                        <label for="username">Username:</label>
+                    </div>
+                    <div>
+                        <input
+                            style="
+                                width: 100%;
+                                font-weight: bold;
+                                border: 1px solid #3f3f3f;
+                                padding: 8px 12px;
+                                border-radius: 3px;
+                            "
+                            name="username"
+                            placeholder="email address or username" />
+                    </div>
+                </div>
+                <div class="p-2">
+                    <div
+                        style="padding: 8px 0px;"
+                    >
+                        <label for="password">Password:</label>
+                    </div>
+                    <div>
+                        <input
+                            style="
+                                width: 100%;
+                                font-weight: bold;
+                                border: 1px solid #3f3f3f;
+                                padding: 8px 12px;
+                                border-radius: 3px;
+                            "
+                            type="password"
+                            name="password"
+                            placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
+                    </div>
+                </div>
+                <div class="px-2 py-4">
+                    <button type="submit"
+                        style="
+                            font-weight: bold;
+                            border: 1px solid #3f3f3f;
+                            padding: 5px 9px;
+                            border-radius: 3px;
+                        "
+                    >Login</button>
+                    <div class="pt-4 pb-4">By using this application, you agree to our terms and acknowledge our limitation of liability, <a href="/disclaimer" class="font-bold">here</a></div>
+                </div>
+            </div>
+            <div class="col-3"></div>
+        </div>
+    </form>
+</section>
+
+<section class="accordion sellers">
+    <p
+        data-identifier="content2"
+        style="
+            padding-top: 100px;
+            padding-bottom: 100px;
+        "
+    >{{ context.detail }}</p>
+</section>
+{% endblock %}
