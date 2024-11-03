@@ -7,7 +7,7 @@ from .config import Config
 
 db = SQLAlchemy()
 login_manager = LoginManager()
-login_manager.login_view = 'login'
+login_manager.login_view = 'main.login'
 migrate = Migrate()
 
 
@@ -26,3 +26,4 @@ def create_app():
 
 
 server = create_app()
+server.secret_key = 'vaaYiezei4Ahx8de8ohQueibeeg8aiwu'

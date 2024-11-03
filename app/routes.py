@@ -10,6 +10,10 @@ from .constants import *
 
 
 
+main = Blueprint('main', __name__)
+
+
+
 
 # Function to calculate the day of the week
 def find_day_of_week(date_string):
@@ -27,8 +31,18 @@ def find_day_of_week(date_string):
 
 
 
+# Example: Login function (for testing)
+@main.route('/do_login')
+def do_login():
+    user = User(id=1)  # Replace with actual user loading logic
+    login_user(user)
+    return redirect(url_for('dashboard'))
 
-main = Blueprint('main', __name__)
+
+@main.route('/dashboard')
+@login_required
+def dashboard():
+    return render_template('dashboard.html')
 
 
 @login_manager.user_loader
@@ -42,10 +56,12 @@ def health():
 
 
 @main.route('/')
+@login_required
 def index():
     context = dict(
+                   app_name = APP_NAME,
                    title = APP_NAME,
-                   detail="AllMates is a case data platform that helps citizens locate and stay up-to-date in cases and court communications regarding on-going cases.",
+                   detail=f"{APP_NAME} is a case data platform that helps citizens locate and stay up-to-date in cases and court communications regarding on-going cases.",
                    navigation_menu=NAVIGATION_MENU,
                    links=[
                         dict(title="Find Case", detail="Search cases by case number and citizen detail", code="find-case", id=1),
@@ -63,6 +79,7 @@ def index():
 
 
 @main.route('/case')
+@login_required
 def case():
 
     cases = MOCK_CASE_LIST[:7]
@@ -76,6 +93,7 @@ def case():
             this_case["team"].append(MOCK_CASE_TEAM[rnd])
 
     context = dict(
+                   app_name = APP_NAME,
         title = f"{APP_NAME} / Cases",
         page_title = "Cases",
         page_code = "case",
@@ -89,6 +107,7 @@ def case():
 
 
 @main.route('/schedule')
+@login_required
 def schedule():
     rnd = random.randint(0, 10)
     event = MOCK_SCHEDULE_LIST[rnd]
@@ -108,6 +127,7 @@ def schedule():
         rnd = random.randint(0, 3)
         schedule["status"] = MOCK_EVENT_STATUS[rnd]
     context = dict(
+                   app_name = APP_NAME,
         title = f"{APP_NAME} / Court Schedule",
         page_code = "schedule",
         page_title = "Court Schedule",
@@ -123,12 +143,14 @@ def schedule():
 
 @main.route('/locate')
 @main.route('/locate/<int:pk>')
+@login_required
 def locate(pk=None):
     current_court = None
     if pk:
       if pk > 0 and pk - 1 < len(COURT_LIST):
         current_court = COURT_LIST[pk - 1]
     context = dict(
+                   app_name = APP_NAME,
         title = f"{APP_NAME} / Locate Inmate",
         page_code = "locate",
         page_title = "Locate Inmate",
@@ -144,6 +166,7 @@ def locate(pk=None):
 
 
 @main.route('/team')
+@login_required
 def team():
 
     rnd = random.randint(0, 10)
@@ -160,6 +183,7 @@ def team():
         this_team["chat"] = MOCK_TEAM_CHAT[rnd]
 
     context = dict(
+                   app_name = APP_NAME,
         page_code = "team",
         title = f"{APP_NAME} / Your Legal Team",
         page_title = "Your Legal Team",
@@ -172,9 +196,12 @@ def team():
     return render_template('team.html', context=context)
 
 
+
 @main.route('/transfer')
+@login_required
 def transfer():
     context = dict(
+                   app_name = APP_NAME,
         page_code = "transfer",
         title = f"{APP_NAME} / Funds Trander History",
         page_title = "Funds Transfer History",
@@ -185,9 +212,12 @@ def transfer():
     return render_template('transfer.html', context=context)
 
 
+
 @main.route('/fee')
+@login_required
 def fee():
     context = dict(
+                   app_name = APP_NAME,
         page_code = "fee",
         title = f"{APP_NAME} / Fees & Deadlines",
         page_title = "Fees & Deadlines",
@@ -198,13 +228,15 @@ def fee():
     return render_template('fee.html', context=context)
 
 
+
 @main.route('/about')
 def about():
     context = dict(
+                   app_name = APP_NAME,
         page_code = "about",
-        title = "About AllMates",
-        page_title = "About AllMates",
-        detail="AllMates is a case data platform that helps citizens locate and stay up-to-date in cases and court communications regarding on-going cases.",
+        title = f"About {APP_NAME}",
+        page_title = f"About {APP_NAME}",
+        detail = f"{APP_NAME} is a case data platform that helps citizens locate and stay up-to-date in cases and court communications regarding on-going cases.",
         navigation_menu=NAVIGATION_MENU,
         user=MOCK_USER_PROFILE,
     )
@@ -212,28 +244,7 @@ def about():
 
 
 
-@main.route('/login', methods=['GET', 'POST'])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('main.index'))
-
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user and user.check_password(form.password.data):
-            login_user(user)
-            return redirect(url_for('main.index'))
-        flash('Invalid username or password')
-    return render_template('login.html', form=form)
-
-
-@main.route('/logout')
 @login_required
-def logout():
-    logout_user()
-    return redirect(url_for('main.index'))
-
-
 @main.route('/search_case', methods=['GET', 'POST'])
 def search_case():
     if request.method == 'POST':
@@ -243,3 +254,53 @@ def search_case():
             return render_template('case_detail.html', case=case)
         flash('Case not found')
     return render_template('search_case.html')
+
+
+
+@main.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+
+    context = dict(
+                   app_name = APP_NAME,
+                   page_title = f"{APP_NAME} Login",
+                   )
+
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None:
+            print("User not found.")
+        else:
+            print(f"User found: {user.username}")
+
+        print("\n" * 5)
+        print(form.username.data)
+        print("\n" * 5)
+        print(user)
+        if user and user.check_password(form.password.data):
+            login_user(user)
+            return redirect(url_for('main.index'))
+        flash('Invalid username or password')
+    return render_template('login.html', form=form, context=context)
+
+
+
+@main.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('main.index'))
+
+
+@main.route('/disclaimer', methods=['GET', 'POST'])
+def terms_and_conditions():
+    context = dict(
+        app_name = APP_NAME,
+        page_title = f"{APP_NAME} Legal Disclaimer",
+        detail = """
+"""
+    )
+    return render_template('disclaimer.html', context=context)
+

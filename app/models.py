@@ -34,32 +34,40 @@ class BasePerson(db.Model):
 
 class BaseAddress(db.Model):
     __abstract__ = True
-    address = db.Column(db.Text, nullable=False)
-    zip_code = db.Column(db.String(100), nullable=False)
+    address = db.Column(db.Text, nullable=True)
+    zip_code = db.Column(db.String(100), nullable=True)
+
     @declared_attr
     def city_id(cls):
-        return db.Column(db.Integer, db.ForeignKey('city.id'), nullable=False)
+        return db.Column(db.Integer, db.ForeignKey('city.id'), nullable=True)
+
     @declared_attr
     def county_id(cls):
-        return db.Column(db.Integer, db.ForeignKey('county.id'), nullable=False)
+        return db.Column(db.Integer, db.ForeignKey('county.id'), nullable=True)
+
     @declared_attr
     def state_id(cls):
-        return db.Column(db.Integer, db.ForeignKey('state.id'), nullable=False)
+        return db.Column(db.Integer, db.ForeignKey('state.id'), nullable=True)
+
     @declared_attr
     def country_id(cls):
-        return db.Column(db.Integer, db.ForeignKey('country.id'), nullable=False)
+        return db.Column(db.Integer, db.ForeignKey('country.id'), nullable=True)
+
     @declared_attr
     def city(cls):
-        return db.relationship('City', backref=db.backref('addresses', lazy=True))
+        return db.relationship('City', backref=db.backref(f'{cls.__name__.lower()}_address_city', lazy=True))
+
     @declared_attr
     def county(cls):
-        return db.relationship('County', backref=db.backref('addresses', lazy=True))
+        return db.relationship('County', backref=db.backref(f'{cls.__name__.lower()}_address_county', lazy=True))
+
     @declared_attr
     def state(cls):
-        return db.relationship('State', backref=db.backref('addresses', lazy=True))
+        return db.relationship('State', backref=db.backref(f'{cls.__name__.lower()}_address_state', lazy=True))
+
     @declared_attr
     def country(cls):
-        return db.relationship('Country', backref=db.backref('addresses', lazy=True))
+        return db.relationship('Country', backref=db.backref(f'{cls.__name__.lower()}_address_country', lazy=True))
 
     def __repr__(self):
         return f"<Address street={self.address} city={self.city.title} county={self.county.title} state={self.state.title} zip_code={self.zip_code}>"
@@ -70,9 +78,9 @@ class BaseAddress(db.Model):
 class City(db.Model):
     __tablename__ = 'city'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(255), nullable=False)
-    detail = db.Column(db.Text, nullable=False)
-    county_id = db.Column(db.Integer, db.ForeignKey('county.id'), nullable=False)
+    title = db.Column(db.String(255), nullable=True)
+    detail = db.Column(db.Text, nullable=True)
+    county_id = db.Column(db.Integer, db.ForeignKey('county.id'), nullable=True)
     county = db.relationship('County', backref=db.backref('county', lazy=True))
 
     def __repr__(self):
@@ -82,9 +90,9 @@ class City(db.Model):
 class County(db.Model):
     __tablename__ = 'county'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(255), nullable=False)
-    detail = db.Column(db.Text, nullable=False)
-    state_id = db.Column(db.Integer, db.ForeignKey('state.id'), nullable=False)
+    title = db.Column(db.String(255), nullable=True)
+    detail = db.Column(db.Text, nullable=True)
+    state_id = db.Column(db.Integer, db.ForeignKey('state.id'), nullable=True)
     state = db.relationship('State', backref=db.backref('state', lazy=True))
 
     def __repr__(self):
@@ -94,9 +102,9 @@ class County(db.Model):
 class State(db.Model):
     __tablename__ = 'state'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(255), nullable=False)
-    detail = db.Column(db.Text, nullable=False)
-    country_id = db.Column(db.Integer, db.ForeignKey('country.id'), nullable=False)
+    title = db.Column(db.String(255), nullable=True)
+    detail = db.Column(db.Text, nullable=True)
+    country_id = db.Column(db.Integer, db.ForeignKey('country.id'), nullable=True)
     country = db.relationship('Country', backref=db.backref('country', lazy=True))
 
     def __repr__(self):
@@ -106,8 +114,8 @@ class State(db.Model):
 class Country(db.Model):
     __tablename__ = 'country'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(255), nullable=False)
-    detail = db.Column(db.Text, nullable=False)
+    title = db.Column(db.String(255), nullable=True)
+    detail = db.Column(db.Text, nullable=True)
 
     def __repr__(self):
         return f"<Country title={self.title}>"
@@ -145,18 +153,28 @@ class User(UserMixin, BaseAddress):
     last_name = db.Column(db.String(255), nullable=False)
     other_name = db.Column(db.String(255), nullable=True)
     email = db.Column(db.String(150), unique=True, nullable=False)
-    password_hash = db.Column(db.String(150), nullable=False)
+    password_hash = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(50), nullable=False)  # e.g., 'lawyer', 'judge', 'defendant', 'plaintiff', etc.
     # address_id = db.Column(db.Integer, db.ForeignKey('address.id'), nullable=False)
     # address = db.relationship('Address', backref=db.backref('users', lazy=True))
     # Backref to indicate which court appearances the user is attending
-    court__appearances = db.relationship('CourtAppearance', secondary=court__appearance_attendees, backref=db.backref('attendees', lazy='dynamic'))
+    court_apearances = db.relationship(
+        'CourtAppearance',
+        secondary=court__appearance_attendees,
+        backref=db.backref('attendees_in_court', lazy='dynamic')
+    )
+    is_superuser = db.Column(db.Boolean, default=False)
+
 
     def set_password(self, password):
+        # hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
         self.password_hash = generate_password_hash(password)
 
+    
     def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
+        result = check_password_hash(self.password_hash, password)
+        return result
+
 
     def __repr__(self):
         return f"<User first_name={self.first_name} last_name={self.last_name}>"
@@ -207,9 +225,9 @@ class CaseLegalRepresentative(db.Model):
     __tablename__ = 'case__legal_representative'
     id = db.Column(db.Integer, primary_key=True)
     case_id = db.Column(db.Integer, db.ForeignKey('case.id'), nullable=False)
-    case = db.relationship('Case', backref=db.backref('cases', lazy=True))
+    case = db.relationship('Case', backref=db.backref('case_legal_representative__cases', lazy=True))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    user = db.relationship('User', backref=db.backref('cases', lazy=True))
+    user = db.relationship('User', backref=db.backref('users', lazy=True))
     notes = db.Column(db.Text, nullable=True)
 
     def __repr__(self):
@@ -220,9 +238,9 @@ class CasePlaintiff(db.Model):
     __tablename__ = 'case__plaintiff'
     id = db.Column(db.Integer, primary_key=True)
     case_id = db.Column(db.Integer, db.ForeignKey('case.id'), nullable=False)
-    case = db.relationship('Case', backref=db.backref('cases', lazy=True))
+    case = db.relationship('Case', backref=db.backref('plaintiff__cases', lazy=True))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    user = db.relationship('User', backref=db.backref('cases', lazy=True))
+    user = db.relationship('User', backref=db.backref('case_plaintiff__user_account', lazy=True))
     notes = db.Column(db.Text, nullable=True)
 
     def __repr__(self):
@@ -233,9 +251,9 @@ class CaseDefendant(db.Model):
     __tablename__ = 'case__defendant'
     id = db.Column(db.Integer, primary_key=True)
     case_id = db.Column(db.Integer, db.ForeignKey('case.id'), nullable=False)
-    case = db.relationship('Case', backref=db.backref('cases', lazy=True))
+    case = db.relationship('Case', backref=db.backref('case_defendant__cases', lazy=True))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    user = db.relationship('User', backref=db.backref('cases', lazy=True))
+    user = db.relationship('User', backref=db.backref('case_defendant__user_account', lazy=True))
     notes = db.Column(db.Text, nullable=True)
 
     def __repr__(self):
@@ -248,7 +266,7 @@ class CaseIssue(db.Model):
     question = db.Column(db.Text, nullable=True)
     answer = db.Column(db.String(255), nullable=False)
     case_id = db.Column(db.Integer, db.ForeignKey('case.id'), nullable=False)
-    case = db.relationship('Case', backref=db.backref('cases', lazy=True))
+    case = db.relationship('Case', backref=db.backref('issue__case', lazy=True))
 
     def __repr__(self):
         return f"<CaseIssue question={self.question} answer={self.answer}>"
@@ -260,7 +278,7 @@ class CaseConcurrenceDissent(db.Model):
     concurrence = db.Column(db.Text, nullable=True)
     dissent = db.Column(db.Text, nullable=True)
     case_id = db.Column(db.Integer, db.ForeignKey('case.id'), nullable=False)
-    case = db.relationship('Case', backref=db.backref('cases', lazy=True))
+    case = db.relationship('Case', backref=db.backref('case_concurrent_dissent__cases', lazy=True))
 
     def __repr__(self):
         return f"<ConcurrenceDissent concurrence={self.concurrence[:30]}... dissent={self.dissent[:30]}...>"
@@ -270,15 +288,15 @@ class CourtAppearance(db.Model):
     __tablename__ = 'court__appearance'
     id = db.Column(db.Integer, primary_key=True)
     case_id = db.Column(db.Integer, db.ForeignKey('case.id'), nullable=False)
-    case = db.relationship('Case', backref=db.backref('court__appearances', lazy=True))
+    case = db.relationship('Case', backref=db.backref('court__appearances_by_case', lazy=True))
     court_id = db.Column(db.Integer, db.ForeignKey('court.id'), nullable=False)
-    court = db.relationship('Court', backref=db.backref('court__appearances', lazy=True))
+    court = db.relationship('Court', backref=db.backref('court__appearances_by_court', lazy=True))
     title = db.Column(db.String(255), nullable=False)
     detail = db.Column(db.Text, nullable=True)
     date = db.Column(db.Date, nullable=False)
     time = db.Column(db.Time, nullable=False)
     # Relationship to attendees through the association table
-    attendees = db.relationship('User', secondary=court__appearance_attendees, backref=db.backref('court__appearances', lazy='dynamic'))
+    attendees = db.relationship('User', secondary=court__appearance_attendees, backref=db.backref('court_appearances_as_attendee', lazy='dynamic'))  # Updated backref
 
     def __repr__(self):
         return f"<CourtAppearance case={self.case} date={self.date} time={self.time}>"
