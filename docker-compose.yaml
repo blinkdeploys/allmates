@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: allmates_app
+    container_name: legalease_app
     command: flask run --host=${HOST} --port=${PORT} --debug
     volumes:
       - ./app:/usr/src/app
@@ -24,7 +24,7 @@ services:
 
   db:
     image: postgres:13
-    container_name: allmates_db
+    container_name: legalease_db
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -46,7 +46,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: allmates_migrate
+    container_name: legalease_migrate
     command: >
       sh -c "
         if [ ! -d './migrations' ]; then

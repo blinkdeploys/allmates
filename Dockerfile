@@ -13,8 +13,8 @@ RUN apt-get update && apt-get install -y \
     libpq-dev gcc
 
 # Copy requirements.txt and install dependencies
-COPY requirements.txt /usr/src/app/
-RUN pip install --no-cache-dir -r requirements.txt
+COPY app/requirements.txt /usr/src/app/
+RUN pip install -r /usr/src/app/requirements.txt --no-cache-dir
 
 # Copy the application code
 COPY . /usr/src/app/
