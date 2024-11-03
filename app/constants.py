@@ -1,4 +1,4 @@
-APP_NAME = "AllMates"
+APP_NAME = "LegalEase"
 
 NAVIGATION_MENU = [
                     dict(code="case", title="Cases"),
