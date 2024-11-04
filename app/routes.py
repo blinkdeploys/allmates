@@ -275,10 +275,6 @@ def login():
         else:
             print(f"User found: {user.username}")
 
-        print("\n" * 5)
-        print(form.username.data)
-        print("\n" * 5)
-        print(user)
         if user and user.check_password(form.password.data):
             login_user(user)
             return redirect(url_for('main.index'))
